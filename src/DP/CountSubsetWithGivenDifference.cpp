@@ -8,7 +8,7 @@ int cntSubsetSum(int arr[], int n, int sum){
     for(int i=0; i<n+1; i++)
         dp[i][0] = 1;
     for(int i=1; i<n+1; i++){
-        for(int j=1; j<n+1; j++){
+        for(int j=1; j<sum+1; j++){
             if(arr[i-1] <= j)
                 dp[i][j] = dp[i-1][j-arr[i-1]] + dp[i-1][j];
             else
@@ -27,10 +27,10 @@ int main(){
     cin >> difference;
     int actual_sum_needed;
     int sum =0;
-    for(auto const &a: arr)
-        sum += a;
-    actual_sum_needed = (difference + sum)/2;
-    int ans = cntSubsetSum(arr, n, actual_sum_needed);
+    for(int i=0; i<n;i++)
+        sum += arr[i];
+    int required_sum = 0;    
+    int ans = cntSubsetSum(arr, n, required_sum);
     std::cout << ans <<endl;
     return 0;
 }
