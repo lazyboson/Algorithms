@@ -1,6 +1,5 @@
-#include <iostream>
-#include <queue>
-#include <vector>
+#include <bits/stdc++.h>
+
 
 void dfs(const std::vector<int> graph[], bool* visited, int start) {
 	if (visited[start] == true)
@@ -28,6 +27,10 @@ void bfs(const std::vector<int> graph[], bool* visited, int* distance, std::queu
 			_q.push(u);
 		}
 	}
+}
+
+bool is_cyclic(std::vector<int> graph[]){
+	
 }
 
 int connected_component(std::vector<int> graph[]) {
