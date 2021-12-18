@@ -50,14 +50,15 @@ int main() {
             transpose_adj[u].push_back(i);
         }
     }
-    //now start calling dfs2 from the topological sort containing array ---
-    //In graph theory -- Strongly Connected Component means if you pick any node of graph's component then you can visit all the nodes in that component 
-    //Algo -- Step 1 - First do Topological sort of the given graph..
-    //    -- Step 2 - reverse the edges of directed graph or mathematically transpose the graph
-    //    -- Step 3 -- perform the series of dfs on the topological-sort nodes ..
+    /*
+     * now start calling dfs2 from the topological sort containing array ---
+     * In graph theory -- Strongly Connected Component means if you pick any node of graph's component then you can visit all the nodes in that component
+     * Algo -- Step 1 - First do Topological sort of the given graph..
+     * -- Step 2 - reverse the edges of directed graph or mathematically transpose the graph
+     * -- Step 3 -- perform the series of dfs on the topological-sort nodes ..
+    */
     std::cout << "Strongly Connected Components..." << "\n";
-    std::vector<int> roots(5, 0);
-    std::vector<int> root_nodes;
+    std::vector<int> reps(5, 0);
     std::vector<std::vector<int>> adj_scc(6);
 
     while (!st.empty()) {
@@ -66,19 +67,25 @@ int main() {
         if (!visited[curr]) {
             std::vector<int> components;
             dfs2(curr, visited, components);
+            /*For condensing the adjacency --
+             * choose front from the current connected component --
+             * and make it representative for all members of the current scc
+            */
             int root = components.front();
             for (auto const &u: components) {
-                roots[u] = root;
+                reps[u] = root;
             }
-            root_nodes.push_back(root);
         }
     }
 
     //condensing the scc into new adjacency of adj_scc
+    /* here iterating over the current adjacency --
+     * if repr[u] and repr[v] are not equal -- push in current adj_scc
+     */
     for (int i = 1; i <= 5; ++i) {
         for (auto const &u: adj[i]) {
-            int root_v = roots[i];
-            int root_u = roots[u];
+            int root_v = reps[i];
+            int root_u = reps[u];
             if (root_u != root_v) {
                 adj_scc[root_v].push_back(root_u);
             }
