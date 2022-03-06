@@ -4,28 +4,30 @@
  * @author lazyboson
  */
 
-#include <iostream>
-#include <fstream>
-
 
 #include <bits/stdc++.h>
 
 using namespace std;
 
-const int maxN = 1e5 + 5;
+const int maxN = 1e5 + 1;
 long long dp[maxN];
 
 class AFrog1 {
 public:
-    long long jump_count(int current_pos, int maximum_pos, const vector<int> &heights) {
-        if (current_pos >= maximum_pos - 1)
+    long long jump_count(int current_pos, const vector<int> &heights) {
+        long long cost = INT_MAX;
+        //if frog reached at the bottom, so no more cost needed
+        if (current_pos == 0)
             return 0LL;
         if (dp[current_pos] != -1)
             return dp[current_pos];
-        return dp[current_pos] = min(abs(heights[current_pos + 1] - heights[current_pos]) +
-                                     jump_count(current_pos + 1, maximum_pos, heights),
-                                     abs(heights[current_pos + 2] - heights[current_pos]) +
-                                     jump_count(current_pos + 2, maximum_pos, heights));
+        //single step jump--cost
+        cost = min(cost, abs(heights[current_pos] - heights[current_pos - 1]) + jump_count(current_pos - 1, heights));
+        //double step jump cost -- but it is possible if frog is at the step > 1, because otherwise we will go array outofbound
+        if (current_pos > 1)
+            cost = min(cost,
+                       abs(heights[current_pos - 2] - heights[current_pos]) + jump_count(current_pos - 2, heights));
+        return dp[current_pos] = cost;
     }
 
     void solve(std::istream &in, std::ostream &out) {
@@ -36,7 +38,7 @@ public:
             in >> heights[i];
         }
         memset(dp, -1, sizeof(dp));
-        out << jump_count(0, n - 1, heights);
+        out << jump_count(n - 1, heights);
     }
 };
 
