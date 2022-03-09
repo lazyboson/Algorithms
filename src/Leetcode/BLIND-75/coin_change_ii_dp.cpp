@@ -11,8 +11,6 @@ public:
             return 0;
         if(dp[pos][amount] != -1)
             return dp[pos][amount];
-        if(pos < 0)
-            return 0;
         if(amount-coins[pos] >= 0)
             return dp[pos][amount] = coin_combinations(coins, pos, amount-coins[pos]) + coin_combinations(coins, pos-1, amount);
         else
