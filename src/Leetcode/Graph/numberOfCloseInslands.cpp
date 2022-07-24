@@ -23,8 +23,6 @@ public:
                 if(visited[ux][uy] || grid[ux][uy] == 1)
                     continue;
                //zero's on the edge of the grid -- so it is no longer a closed island 
-                if(ux == 0 || ux == n-1 || uy == 0 || uy==m-1)
-                    isIsolatedIsland = false;
                 visited[ux][uy] = true;
                 q.push({ux, uy});
             }
